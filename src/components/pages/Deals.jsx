@@ -105,10 +105,10 @@ const Deals = () => {
   };
 
   const getDealsByStage = (stage) => {
-    return deals.filter(deal => deal.stage === stage);
+return deals.filter(deal => deal.stage_c === stage);
   };
 
-  const getContactById = (id) => {
+const getContactById = (id) => {
     return contacts.find(contact => contact.Id === id);
   };
 
@@ -122,7 +122,7 @@ const Deals = () => {
   };
 
   const calculateStageValue = (stage) => {
-    return getDealsByStage(stage).reduce((sum, deal) => sum + deal.value, 0);
+return getDealsByStage(stage).reduce((sum, deal) => sum + (deal.value_c || 0), 0);
   };
 
   if (loading) return <Loading type="kanban" />;
@@ -201,9 +201,9 @@ const Deals = () => {
                             const contact = getContactById(deal.contactId);
                             return (
                               <DealCard
-                                key={deal.Id}
+key={deal.Id}
                                 deal={deal}
-                                contact={contact}
+                                contact={getContactById(deal.contact_id_c?.Id || deal.contact_id_c) || deal.contact_id_c}
                                 onEdit={handleEditDeal}
                                 onDelete={handleDeleteDeal}
                               />
@@ -230,13 +230,13 @@ const Deals = () => {
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold bg-gradient-to-r from-success to-success/80 bg-clip-text text-transparent mb-1">
-                      {formatCurrency(deals.reduce((sum, deal) => sum + deal.value, 0))}
+{formatCurrency(deals.reduce((sum, deal) => sum + (deal.value_c || 0), 0))}
                     </div>
                     <div className="text-sm text-gray-600">Total Value</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold bg-gradient-to-r from-info to-info/80 bg-clip-text text-transparent mb-1">
-                      {Math.round(deals.reduce((sum, deal) => sum + deal.probability, 0) / deals.length)}%
+<div className="text-2xl font-bold bg-gradient-to-r from-info to-info/80 bg-clip-text text-transparent mb-1">
+                      {deals.length > 0 ? Math.round(deals.reduce((sum, deal) => sum + (deal.probability_c || 0), 0) / deals.length) : 0}%
                     </div>
                     <div className="text-sm text-gray-600">Avg Probability</div>
                   </div>

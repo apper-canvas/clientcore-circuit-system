@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Button from "@/components/atoms/Button";
 import SearchBar from "@/components/molecules/SearchBar";
 import ApperIcon from "@/components/ApperIcon";
+import { AuthContext } from "../../App";
 
 const Header = ({ onMenuClick, title, subtitle, actions = [] }) => {
   const [searchValue, setSearchValue] = useState("");
+  const { logout } = useContext(AuthContext);
 
   return (
     <div className="bg-gradient-to-r from-surface to-gray-50 border-b border-gray-200 px-6 py-4">
@@ -37,7 +39,7 @@ const Header = ({ onMenuClick, title, subtitle, actions = [] }) => {
             className="hidden sm:block w-64"
           />
           
-          <div className="flex items-center gap-2">
+<div className="flex items-center gap-2">
             {actions.map((action, index) => (
               <Button
                 key={index}
@@ -50,6 +52,15 @@ const Header = ({ onMenuClick, title, subtitle, actions = [] }) => {
                 <span className="hidden sm:inline">{action.label}</span>
               </Button>
             ))}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={logout}
+              className="flex items-center gap-2"
+            >
+              <ApperIcon name="LogOut" size={16} />
+              <span className="hidden sm:inline">Logout</span>
+            </Button>
           </div>
         </div>
       </div>

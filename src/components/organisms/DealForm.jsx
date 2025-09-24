@@ -7,13 +7,13 @@ import { contactService } from "@/services/api/contactService";
 
 const DealForm = ({ deal, onSubmit, onCancel, isSubmitting = false }) => {
   const [formData, setFormData] = useState({
-    title: "",
-    contactId: "",
-    value: "",
-    stage: "Lead",
-    probability: "",
-    expectedCloseDate: "",
-    notes: ""
+    title_c: "",
+    contact_id_c: "",
+    value_c: "",
+    stage_c: "Lead",
+    probability_c: "",
+    expected_close_date_c: "",
+    notes_c: ""
   });
 
   const [contacts, setContacts] = useState([]);
@@ -24,16 +24,16 @@ const DealForm = ({ deal, onSubmit, onCancel, isSubmitting = false }) => {
   }, []);
 
   useEffect(() => {
-    if (deal) {
+if (deal) {
       setFormData({
-        title: deal.title || "",
-        contactId: deal.contactId || "",
-        value: deal.value?.toString() || "",
-        stage: deal.stage || "Lead",
-        probability: deal.probability?.toString() || "",
-        expectedCloseDate: deal.expectedCloseDate ? 
-          new Date(deal.expectedCloseDate).toISOString().split("T")[0] : "",
-        notes: deal.notes || ""
+        title_c: deal.title_c || "",
+        contact_id_c: deal.contact_id_c?.Id || deal.contact_id_c || "",
+        value_c: deal.value_c?.toString() || "",
+        stage_c: deal.stage_c || "Lead",
+        probability_c: deal.probability_c?.toString() || "",
+        expected_close_date_c: deal.expected_close_date_c ? 
+          new Date(deal.expected_close_date_c).toISOString().split("T")[0] : "",
+        notes_c: deal.notes_c || ""
       });
     }
   }, [deal]);
@@ -49,29 +49,28 @@ const DealForm = ({ deal, onSubmit, onCancel, isSubmitting = false }) => {
 
   const validateForm = () => {
     const newErrors = {};
-    
-    if (!formData.title.trim()) {
-      newErrors.title = "Deal title is required";
+if (!formData.title_c.trim()) {
+      newErrors.title_c = "Deal title is required";
     }
     
-    if (!formData.contactId) {
-      newErrors.contactId = "Contact selection is required";
+    if (!formData.contact_id_c) {
+      newErrors.contact_id_c = "Contact selection is required";
     }
     
-    if (!formData.value.trim()) {
-      newErrors.value = "Deal value is required";
-    } else if (isNaN(formData.value) || parseFloat(formData.value) <= 0) {
-      newErrors.value = "Deal value must be a positive number";
+    if (!formData.value_c.trim()) {
+      newErrors.value_c = "Deal value is required";
+    } else if (isNaN(formData.value_c) || parseFloat(formData.value_c) <= 0) {
+      newErrors.value_c = "Deal value must be a positive number";
     }
     
-    if (!formData.probability.trim()) {
-      newErrors.probability = "Probability is required";
-    } else if (isNaN(formData.probability) || parseFloat(formData.probability) < 0 || parseFloat(formData.probability) > 100) {
-      newErrors.probability = "Probability must be between 0 and 100";
+    if (!formData.probability_c.trim()) {
+      newErrors.probability_c = "Probability is required";
+    } else if (isNaN(formData.probability_c) || parseFloat(formData.probability_c) < 0 || parseFloat(formData.probability_c) > 100) {
+      newErrors.probability_c = "Probability must be between 0 and 100";
     }
     
-    if (!formData.expectedCloseDate) {
-      newErrors.expectedCloseDate = "Expected close date is required";
+    if (!formData.expected_close_date_c) {
+      newErrors.expected_close_date_c = "Expected close date is required";
     }
 
     setErrors(newErrors);
@@ -82,10 +81,10 @@ const DealForm = ({ deal, onSubmit, onCancel, isSubmitting = false }) => {
     e.preventDefault();
     if (validateForm()) {
       const dealData = {
-        ...formData,
-        value: parseFloat(formData.value),
-        probability: parseInt(formData.probability),
-        expectedCloseDate: new Date(formData.expectedCloseDate).toISOString()
+...formData,
+        value_c: parseFloat(formData.value_c),
+        probability_c: parseInt(formData.probability_c),
+        expected_close_date_c: new Date(formData.expected_close_date_c).toISOString()
       };
       onSubmit(dealData);
     }
@@ -147,9 +146,9 @@ const DealForm = ({ deal, onSubmit, onCancel, isSubmitting = false }) => {
             }`}
           >
             <option value="">Select a contact</option>
-            {contacts.map(contact => (
+{contacts.map(contact => (
               <option key={contact.Id} value={contact.Id}>
-                {contact.firstName} {contact.lastName} - {contact.company}
+                {contact.first_name_c} {contact.last_name_c} - {contact.company_c}
               </option>
             ))}
           </select>

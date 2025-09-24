@@ -6,52 +6,52 @@ import ApperIcon from "@/components/ApperIcon";
 
 const ContactForm = ({ contact, onSubmit, onCancel, isSubmitting = false }) => {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    company: "",
-    status: "Lead"
+    first_name_c: "",
+    last_name_c: "",
+    email_c: "",
+    phone_c: "",
+    company_c: "",
+    status_c: "Lead"
   });
 
   const [errors, setErrors] = useState({});
 
-  useEffect(() => {
+useEffect(() => {
     if (contact) {
       setFormData({
-        firstName: contact.firstName || "",
-        lastName: contact.lastName || "",
-        email: contact.email || "",
-        phone: contact.phone || "",
-        company: contact.company || "",
-        status: contact.status || "Lead"
+        first_name_c: contact.first_name_c || "",
+        last_name_c: contact.last_name_c || "",
+        email_c: contact.email_c || "",
+        phone_c: contact.phone_c || "",
+        company_c: contact.company_c || "",
+        status_c: contact.status_c || "Lead"
       });
     }
   }, [contact]);
 
-  const validateForm = () => {
+const validateForm = () => {
     const newErrors = {};
     
-    if (!formData.firstName.trim()) {
-      newErrors.firstName = "First name is required";
+    if (!formData.first_name_c.trim()) {
+      newErrors.first_name_c = "First name is required";
     }
     
-    if (!formData.lastName.trim()) {
-      newErrors.lastName = "Last name is required";
+    if (!formData.last_name_c.trim()) {
+      newErrors.last_name_c = "Last name is required";
     }
     
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email is invalid";
+    if (!formData.email_c.trim()) {
+      newErrors.email_c = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email_c)) {
+      newErrors.email_c = "Email is invalid";
     }
     
-    if (!formData.phone.trim()) {
-      newErrors.phone = "Phone is required";
+    if (!formData.phone_c.trim()) {
+      newErrors.phone_c = "Phone is required";
     }
     
-    if (!formData.company.trim()) {
-      newErrors.company = "Company is required";
+    if (!formData.company_c.trim()) {
+      newErrors.company_c = "Company is required";
     }
 
     setErrors(newErrors);

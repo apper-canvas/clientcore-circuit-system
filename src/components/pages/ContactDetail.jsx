@@ -49,9 +49,9 @@ const ContactDetail = () => {
         return;
       }
       
-      setContact(contactData);
-      setDeals(allDeals.filter(deal => deal.contactId === contactData.Id));
-      setActivities(allActivities.filter(activity => activity.contactId === contactData.Id));
+setContact(contactData);
+      setDeals(allDeals.filter(deal => deal.contact_id_c?.Id === contactData.Id || deal.contact_id_c === contactData.Id));
+      setActivities(allActivities.filter(activity => activity.contact_id_c?.Id === contactData.Id || activity.contact_id_c === contactData.Id));
     } catch (err) {
       setError("Failed to load contact details");
       console.error("Contact detail loading error:", err);
@@ -71,8 +71,8 @@ const ContactDetail = () => {
     }).format(amount);
   };
 
-  const totalDealValue = deals.reduce((sum, deal) => sum + deal.value, 0);
-  const activeDealCount = deals.filter(deal => deal.stage !== "Closed").length;
+const totalDealValue = deals.reduce((sum, deal) => sum + (deal.value_c || 0), 0);
+  const activeDealCount = deals.filter(deal => deal.stage_c !== "Closed").length;
 
   if (loading) return <Loading />;
   if (error) return <Error message={error} onRetry={loadContactData} />;
@@ -97,8 +97,8 @@ const ContactDetail = () => {
     <div className="min-h-screen bg-gradient-to-br from-background to-gray-100">
       <Header
         onMenuClick={onMenuClick}
-        title={`${contact.firstName} ${contact.lastName}`}
-        subtitle={`${contact.company} • ${contact.email}`}
+title={`${contact.first_name_c} ${contact.last_name_c}`}
+        subtitle={`${contact.company_c} • ${contact.email_c}`}
         actions={headerActions}
       />
       
@@ -109,29 +109,29 @@ const ContactDetail = () => {
             <Card className="p-6 bg-gradient-to-br from-surface to-gray-50">
               <div className="text-center mb-6">
                 <div className="w-20 h-20 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">
-                  {contact.firstName?.[0]}{contact.lastName?.[0]}
+{contact.first_name_c?.[0]}{contact.last_name_c?.[0]}
                 </div>
                 <h2 className="text-xl font-bold text-primary mb-2">
-                  {contact.firstName} {contact.lastName}
+{contact.first_name_c} {contact.last_name_c}
                 </h2>
-                <p className="text-gray-600 mb-3">{contact.company}</p>
-                <Badge variant={contact.status === "Active" ? "success" : "default"}>
-                  {contact.status}
+<p className="text-gray-600 mb-3">{contact.company_c}</p>
+                <Badge variant={contact.status_c === "Active" ? "success" : "default"}>
+                  {contact.status_c}
                 </Badge>
               </div>
               
               <div className="space-y-4">
                 <div className="flex items-center text-gray-600">
-                  <ApperIcon name="Mail" size={16} className="mr-3" />
-                  <span className="text-sm">{contact.email}</span>
+<ApperIcon name="Mail" size={16} className="mr-3" />
+                  <span className="text-sm">{contact.email_c}</span>
                 </div>
-                <div className="flex items-center text-gray-600">
+<div className="flex items-center text-gray-600">
                   <ApperIcon name="Phone" size={16} className="mr-3" />
-                  <span className="text-sm">{contact.phone}</span>
+                  <span className="text-sm">{contact.phone_c}</span>
                 </div>
                 <div className="flex items-center text-gray-600">
-                  <ApperIcon name="Building2" size={16} className="mr-3" />
-                  <span className="text-sm">{contact.company}</span>
+                  <ApperIcon name="Building" size={16} className="mr-3" />
+                  <span className="text-sm">{contact.company_c}</span>
                 </div>
                 <div className="flex items-center text-gray-600">
                   <ApperIcon name="Calendar" size={16} className="mr-3" />
@@ -202,12 +202,12 @@ const ContactDetail = () => {
                     />
                   ) : (
                     <div className="space-y-4">
-                      {activities.slice(0, 3).map(activity => (
+{activities.slice(0, 3).map(activity => (
                         <ActivityItem
                           key={activity.Id}
                           activity={activity}
                           contact={contact}
-                          deal={activity.dealId ? getDealById(activity.dealId) : null}
+                          deal={activity.deal_id_c ? getDealById(activity.deal_id_c?.Id || activity.deal_id_c) : null}
                         />
                       ))}
                       {activities.length > 3 && (
@@ -236,7 +236,7 @@ const ContactDetail = () => {
                     />
                   ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {deals.filter(deal => deal.stage !== "Closed").map(deal => (
+{deals.filter(deal => deal.stage_c !== "Closed").map(deal => (
                         <DealCard
                           key={deal.Id}
                           deal={deal}
@@ -313,12 +313,12 @@ const ContactDetail = () => {
                   />
                 ) : (
                   <div className="space-y-4">
-                    {activities.map(activity => (
+{activities.map(activity => (
                       <ActivityItem
                         key={activity.Id}
                         activity={activity}
                         contact={contact}
-                        deal={activity.dealId ? getDealById(activity.dealId) : null}
+                        deal={activity.deal_id_c ? getDealById(activity.deal_id_c?.Id || activity.deal_id_c) : null}
                       />
                     ))}
                   </div>

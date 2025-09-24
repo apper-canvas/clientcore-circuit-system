@@ -8,11 +8,11 @@ import { dealService } from "@/services/api/dealService";
 
 const ActivityForm = ({ activity, onSubmit, onCancel, isSubmitting = false }) => {
   const [formData, setFormData] = useState({
-    contactId: "",
-    dealId: "",
-    type: "Call",
-    description: "",
-    date: new Date().toISOString().slice(0, 16)
+    contact_id_c: "",
+    deal_id_c: "",
+    type_c: "Call",
+    description_c: "",
+    date_c: new Date().toISOString().slice(0, 16)
   });
 
   const [contacts, setContacts] = useState([]);
@@ -25,22 +25,22 @@ const ActivityForm = ({ activity, onSubmit, onCancel, isSubmitting = false }) =>
   }, []);
 
   useEffect(() => {
-    if (activity) {
+if (activity) {
       setFormData({
-        contactId: activity.contactId?.toString() || "",
-        dealId: activity.dealId?.toString() || "",
-        type: activity.type || "Call",
-        description: activity.description || "",
-        date: activity.date ? 
-          new Date(activity.date).toISOString().slice(0, 16) : 
+        contact_id_c: activity.contact_id_c?.Id || activity.contact_id_c?.toString() || "",
+        deal_id_c: activity.deal_id_c?.Id || activity.deal_id_c?.toString() || "",
+        type_c: activity.type_c || "Call",
+        description_c: activity.description_c || "",
+        date_c: activity.date_c ? 
+          new Date(activity.date_c).toISOString().slice(0, 16) : 
           new Date().toISOString().slice(0, 16)
       });
     }
   }, [activity]);
 
-  useEffect(() => {
-    if (formData.contactId) {
-      const contactDeals = deals.filter(deal => deal.contactId.toString() === formData.contactId);
+useEffect(() => {
+    if (formData.contact_id_c) {
+      const contactDeals = deals.filter(deal => deal.contact_id_c?.Id?.toString() === formData.contact_id_c || deal.contact_id_c?.toString() === formData.contact_id_c);
       setFilteredDeals(contactDeals);
     } else {
       setFilteredDeals(deals);
@@ -63,17 +63,16 @@ const ActivityForm = ({ activity, onSubmit, onCancel, isSubmitting = false }) =>
 
   const validateForm = () => {
     const newErrors = {};
-    
-    if (!formData.contactId) {
-      newErrors.contactId = "Contact selection is required";
+if (!formData.contact_id_c) {
+      newErrors.contact_id_c = "Contact selection is required";
     }
     
-    if (!formData.description.trim()) {
-      newErrors.description = "Description is required";
+    if (!formData.description_c.trim()) {
+      newErrors.description_c = "Description is required";
     }
     
-    if (!formData.date) {
-      newErrors.date = "Date is required";
+    if (!formData.date_c) {
+      newErrors.date_c = "Date is required";
     }
 
     setErrors(newErrors);
@@ -84,10 +83,10 @@ const ActivityForm = ({ activity, onSubmit, onCancel, isSubmitting = false }) =>
     e.preventDefault();
     if (validateForm()) {
       const activityData = {
-        ...formData,
-        contactId: parseInt(formData.contactId),
-        dealId: formData.dealId ? parseInt(formData.dealId) : null,
-        date: new Date(formData.date).toISOString()
+...formData,
+        contact_id_c: parseInt(formData.contact_id_c),
+        deal_id_c: formData.deal_id_c ? parseInt(formData.deal_id_c) : null,
+        date_c: new Date(formData.date_c).toISOString()
       };
       onSubmit(activityData);
     }
@@ -139,8 +138,8 @@ const ActivityForm = ({ activity, onSubmit, onCancel, isSubmitting = false }) =>
           >
             <option value="">Select a contact</option>
             {contacts.map(contact => (
-              <option key={contact.Id} value={contact.Id}>
-                {contact.firstName} {contact.lastName} - {contact.company}
+<option key={contact.Id} value={contact.Id}>
+                {contact.first_name_c} {contact.last_name_c} - {contact.company_c}
               </option>
             ))}
           </select>
@@ -161,8 +160,8 @@ const ActivityForm = ({ activity, onSubmit, onCancel, isSubmitting = false }) =>
           >
             <option value="">No related deal</option>
             {filteredDeals.map(deal => (
-              <option key={deal.Id} value={deal.Id}>
-                {deal.title}
+<option key={deal.Id} value={deal.Id}>
+                {deal.title_c}
               </option>
             ))}
           </select>

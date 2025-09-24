@@ -59,30 +59,30 @@ const Activities = () => {
     }
   };
 
-  const filterActivities = () => {
+const filterActivities = () => {
     let filtered = activities;
 
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
       filtered = filtered.filter(activity => {
-        const contact = getContactById(activity.contactId);
-        const deal = activity.dealId ? getDealById(activity.dealId) : null;
+        const contact = getContactById(activity.contact_id_c?.Id || activity.contact_id_c);
+        const deal = activity.deal_id_c ? getDealById(activity.deal_id_c?.Id || activity.deal_id_c) : null;
         
         return (
-          activity.description?.toLowerCase().includes(term) ||
-          activity.type?.toLowerCase().includes(term) ||
-          (contact && `${contact.firstName} ${contact.lastName}`.toLowerCase().includes(term)) ||
-          (deal && deal.title?.toLowerCase().includes(term))
+          activity.description_c?.toLowerCase().includes(term) ||
+          activity.type_c?.toLowerCase().includes(term) ||
+          (contact && `${contact.first_name_c} ${contact.last_name_c}`.toLowerCase().includes(term)) ||
+          (deal && deal.title_c?.toLowerCase().includes(term))
         );
       });
     }
 
     if (typeFilter !== "All") {
-      filtered = filtered.filter(activity => activity.type === typeFilter);
+      filtered = filtered.filter(activity => activity.type_c === typeFilter);
     }
 
     // Sort by date descending (most recent first)
-    filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+    filtered.sort((a, b) => new Date(b.date_c || 0) - new Date(a.date_c || 0));
     
     setFilteredActivities(filtered);
   };
@@ -233,16 +233,16 @@ const Activities = () => {
             ) : (
               <div className="p-6">
                 <div className="space-y-4">
-                  {filteredActivities.map(activity => {
-                    const contact = getContactById(activity.contactId);
-                    const deal = activity.dealId ? getDealById(activity.dealId) : null;
+{filteredActivities.map(activity => {
+                    const contact = getContactById(activity.contact_id_c?.Id || activity.contact_id_c);
+                    const deal = activity.deal_id_c ? getDealById(activity.deal_id_c?.Id || activity.deal_id_c) : null;
                     
                     return (
                       <div key={activity.Id} className="relative group">
                         <ActivityItem
                           activity={activity}
-                          contact={contact}
-                          deal={deal}
+                          contact={contact || activity.contact_id_c}
+                          deal={deal || activity.deal_id_c}
                         />
                         <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex gap-2">
                           <Button
